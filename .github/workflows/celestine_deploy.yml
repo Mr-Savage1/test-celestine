@@ -1,0 +1,142 @@
+name: Deploy to Celestine Hosting
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+      
+      - name: 🚀 Deploy to VistaPanel via FTP
+        env:
+          FTP_USER: ${{ secrets.FTP_USERNAME }}
+          FTP_PASS: ${{ secrets.FTP_PASSWORD }}
+          FTP_SERVER: ftpupload.net
+          BUILD_DIR: .
+        run: |
+          python3 << 'EOF'
+          import os
+          import sys
+          import ftplib
+          from pathlib import Path
+          
+          def upload_ftp():
+              # Get environment variables
+              ftp_server = os.environ.get('FTP_SERVER')
+              ftp_user = os.environ.get('FTP_USER')
+              ftp_pass = os.environ.get('FTP_PASS')
+              build_dir = os.environ.get('BUILD_DIR', '.')
+              remote_dir = '/htdocs'
+              
+              if not all([ftp_server, ftp_user, ftp_pass]):
+                  print("❌ Missing FTP credentials!")
+                  sys.exit(1)
+              
+              print(f"� Connecting to {ftp_server}...")
+              
+              try:
+                  # Connect to FTP server
+                  ftp = ftplib.FTP(ftp_server, timeout=60)
+                  ftp.login(ftp_user, ftp_pass)
+                  print(f"✅ Logged in as {ftp_user}")
+                  
+                  # Change to remote directory
+                  try:
+                      ftp.cwd(remote_dir)
+                      print(f"📂 Working in {remote_dir}")
+                  except ftplib.error_perm:
+                      print(f"📁 Creating {remote_dir}...")
+                      ftp.mkd(remote_dir)
+                      ftp.cwd(remote_dir)
+                  
+                  uploaded_files = 0
+                  uploaded_dirs = 0
+                  
+                  def upload_directory(local_path, remote_base=''):
+                      nonlocal uploaded_files, uploaded_dirs
+                      local_path = Path(local_path)
+                      
+                      if not local_path.exists():
+                          print(f"⚠️  Build directory {local_path} not found!")
+                          return
+                      
+                      items = sorted(local_path.iterdir())
+                      
+                      for item in items:
+                          item_name = item.name
+                          
+                          # Skip hidden files and common excludes
+                          if item_name.startswith('.') or item_name in ['node_modules', '__pycache__', 'vendor']:
+                              continue
+                          
+                          if item.is_file():
+                              # Upload file
+                              try:
+                                  with open(item, 'rb') as f:
+                                      ftp.storbinary(f'STOR {item_name}', f)
+                                  uploaded_files += 1
+                                  print(f"  ✓ {remote_base}/{item_name}")
+                              except Exception as e:
+                                  print(f"  ✗ {item_name}: {e}")
+                          
+                          elif item.is_dir():
+                              # Create and enter directory
+                              try:
+                                  ftp.mkd(item_name)
+                                  uploaded_dirs += 1
+                              except ftplib.error_perm:
+                                  pass  # Directory exists
+                              
+                              current_dir = ftp.pwd()
+                              ftp.cwd(item_name)
+                              print(f"📁 {remote_base}/{item_name}/")
+                              
+                              # Recursively upload subdirectory
+                              upload_directory(item, f"{remote_base}/{item_name}")
+                              
+                              # Go back to parent directory
+                              ftp.cwd(current_dir)
+                  
+                  # Start upload
+                  print(f"\n🚀 Uploading from {build_dir}...\n")
+                  upload_directory(build_dir)
+                  
+                  # Close connection
+                  ftp.quit()
+                  
+                  print(f"\n✅ Deployment complete!")
+                  print(f"📊 Uploaded {uploaded_files} files in {uploaded_dirs} directories")
+                  return 0
+                  
+              except ftplib.error_perm as e:
+                  print(f"❌ FTP Permission Error: {e}")
+                  return 1
+              except ftplib.error_temp as e:
+                  print(f"❌ FTP Temporary Error: {e}")
+                  return 1
+              except Exception as e:
+                  print(f"❌ Error: {e}")
+                  return 1
+          
+          # Run upload
+          exit_code = upload_ftp()
+          sys.exit(exit_code)
+          EOF
+      
+      - name: ✅ Deployment complete
+        run: |
+          echo ""
+          echo "════════════════════════════════════════════════════════════"
+          echo "🎉 Deployment Successful!"
+          echo "════════════════════════════════════════════════════════════"
+          echo "📦 Project Type: static"
+          echo "🔨 Build Command: None"
+          echo "📂 Output Directory: ."
+          echo "🌐 Your site is now live!"
+          echo "════════════════════════════════════════════════════════════"
