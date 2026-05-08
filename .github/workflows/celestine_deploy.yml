@@ -13,17 +13,20 @@ jobs:
       - name: 📥 Checkout code
         uses: actions/checkout@v4
       
-      - name: �️ Setup Node.js
+      - name: 📦 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
           cache: 'npm'
       
-      - name: 📦 Install dependencies
+      - name: 📚 Install dependencies
         run: npm ci
       
       - name: 🔨 Build project
         run: npm run build
+        env:
+          CI: false
+          NODE_ENV: production
       
       - name: 🚀 Deploy to VistaPanel via FTP
         env:
@@ -147,7 +150,7 @@ jobs:
           echo "════════════════════════════════════════════════════════════"
           echo "🎉 Deployment Successful!"
           echo "════════════════════════════════════════════════════════════"
-          echo "📦 Project Type: Vite"
+          echo "📦 Project Type: vue"
           echo "🔨 Build Command: npm run build"
           echo "📂 Output Directory: dist"
           echo "🌐 Your site is now live!"
