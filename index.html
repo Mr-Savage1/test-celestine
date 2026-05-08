@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Celestine Hosting - GitHub Deployment Test</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: grid;
+            min-height: 100vh;
+            place-items: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffffff;
+        }
+
+        .container {
+            text-align: center;
+            padding: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            max-width: 600px;
+            animation: fadeIn 1s ease-in;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .status {
+            font-weight: bold;
+            color: #4CAF50;
+            margin-top: 1rem;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #ffffff;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .button:hover {
+            background: #f0f0f0;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to Celestine Hosting</h1>
+        <p>This is a test website to demonstrate successful GitHub deployment on Celestine Hosting. The site is built as a static HTML page, ready for direct hosting without any build processes.</p>
+        <p>Features:</p>
+        <ul style="text-align: left; display: inline-block;">
+            <li>Responsive design</li>
+            <li>Modern CSS with gradients and animations</li>
+            <li>Simple JavaScript for interactivity</li>
+            <li>Optimized for performance</li>
+        </ul>
+        <p id="status" class="status">Deployment Status: Successful</p>
+        <a href="#" class="button" onclick="showMessage()">Test Interaction</a>
+    </div>
+
+    <script>
+        function showMessage() {
+            alert('GitHub deployment to Celestine Hosting is working perfectly!');
+        }
+
+        // Simple animation on load
+        window.onload = function() {
+            document.querySelector('.container').style.opacity = '1';
+        };
+    </script>
+</body>
+</html>
