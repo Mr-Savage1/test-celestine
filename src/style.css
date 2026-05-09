@@ -15,15 +15,36 @@ body {
 
 .container {
   text-align: center;
-  padding: 2rem;
+  padding: 3rem;
   background: rgba(0, 0, 0, 0.1);
   border-radius: 12px;
   backdrop-filter: blur(10px);
+  max-width: 600px;
 }
 
 h1 {
+  margin-bottom: 0.5rem;
+  font-size: 2.8rem;
+  font-weight: 700;
+  background: linear-gradient(120deg, #fff, #e0e7ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+h1 + p {
   margin-bottom: 1rem;
-  font-size: 2.5rem;
+  font-size: 1.2rem;
+  opacity: 0.95;
+  color: #fff;
+}
+
+.tagline {
+  font-size: 0.9rem !important;
+  margin-bottom: 2rem !important;
+  opacity: 0.8;
+  font-style: italic;
+  color: #e0e7ff;
 }
 
 p {
@@ -42,12 +63,25 @@ button {
   cursor: pointer;
   font-weight: 600;
   transition: all 0.3s ease;
+  margin-bottom: 2rem;
 }
 
 button:hover {
   transform: scale(1.05);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2)
-  }
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.info {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 1.5rem;
+  border-radius: 8px;
+  border-left: 3px solid #fff;
+}
+
+.info p {
+  margin-bottom: 0;
+  font-size: 0.95rem;
+}
 
   .btn {
     width: 100%;

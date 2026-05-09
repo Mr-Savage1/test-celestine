@@ -3,9 +3,13 @@ import './style.css'
 const app = document.querySelector('#app')
 app.innerHTML = `
   <div class="container">
-    <h1>Sample Vite App</h1>
-    <p>This is a minimal Vite application for testing and deployment.</p>
-    <button id="counter">Click count: 0</button>
+    <h1>Celestine Hosting</h1>
+    <p>Premium Web Hosting Solution</p>
+    <p class="tagline">Built with Vite | Deployed on Celestine Hosting</p>
+    <button id="counter">Interactive Demo - Click count: 0</button>
+    <div class="info">
+      <p>This sample app showcases the performance of Celestine Hosting infrastructure.</p>
+    </div>
   </div>
 `
 
