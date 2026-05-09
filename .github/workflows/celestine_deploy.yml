@@ -150,7 +150,7 @@ jobs:
           echo "════════════════════════════════════════════════════════════"
           echo "🎉 Deployment Successful!"
           echo "════════════════════════════════════════════════════════════"
-          echo "📦 Project Type: vue"
+          echo "📦 Project Type: vite"
           echo "🔨 Build Command: npm run build"
           echo "📂 Output Directory: dist"
           echo "🌐 Your site is now live!"
